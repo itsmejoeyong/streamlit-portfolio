@@ -4,16 +4,21 @@ import pandas as pd
 
 
 class DataFrameCleaner:
-    def clean_dataframe(self, df: pd.DataFrame) -> pd.DataFrame:
+    def clean_dataframe(
+        self, df: pd.DataFrame, date_column: list[str] = None
+    ) -> pd.DataFrame:
         """
         cleans the dataframe using various functions
 
         Args:
             df (pd.DataFrame): pandas dataframe
+            date_column (str): date column to be validated
 
         Returns:
             pd.DataFrame: pandas dataframe
         """
+        self.date_column: list[str] = date_column
+
         cleaning_methods = [
             self._format_columns,
             self._filter_negative_int,
@@ -70,9 +75,9 @@ class DataFrameCleaner:
         Returns:
             pd.DataFrame: pandas dataframe
         """
-        for col in df.columns:
-            if pd.api.types.is_datetime64_any_dtype(df[col]):
-                df[col] = pd.to_datetime(df[col], errors="coerce")
+        for date in self.date_column:
+            if date in df.columns:
+                df[date] = pd.to_datetime(df[date], errors="coerce")
         return df
 
     def _drop_dupes(self, df: pd.DataFrame) -> pd.DataFrame:

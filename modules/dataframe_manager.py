@@ -8,7 +8,7 @@ class DataFrameManager:
     def __init__(self, path_to_df: str):
         self.file_path = path_to_df
         self.path = Path(path_to_df)
-        self.name = self.path.name
+        self.name = self.path.name.split(".")[0]
         self.df = self._initialize_df()
 
     def _initialize_df(self) -> pd.DataFrame:
