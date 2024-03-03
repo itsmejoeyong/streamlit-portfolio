@@ -1,4 +1,3 @@
-from datetime import datetime
 import os
 
 import duckdb
@@ -39,84 +38,123 @@ with st.expander("About the project & data"):
         
         st.dataframe(df)
 
-########## CHARTS LOGIC ##########
+########## METRICS BY STATE ##########
+st.markdown("### Metrics")
+with st.expander("__Donation Metrics__"):
+    DONATIONS_STATE_QUERY = """
+    SELECT
+        date,
+        state,
+        daily,
+        blood_a,
+        blood_b,
+        blood_o,
+        blood_ab,
+        social_civilian,
+        social_student,
+        social_policearmy,
+        donations_new,
+        donations_regular,
+        donations_irregular
+    FROM donations_state
+    """
 
-st.subheader("Charts")
-DONATIONS_STATE_QUERY = """
-SELECT
-    date,
-    state,
-    blood_a,
-    blood_b,
-    blood_o,
-    blood_ab,
-    social_civilian,
-    social_student,
-    social_policearmy,
-    donations_new,
-    donations_regular,
-    donations_irregular
-FROM donations_state
-"""
+    # NOTE: DONATIONS_STATE_DF shorthand is: dons_st_df
+    DONATIONS_STATE_DF = con.execute(DONATIONS_STATE_QUERY).df()
+    dons_st_df_aggregate = DONATIONS_STATE_DF.groupby(['state', pd.Grouper(key='date', freq='YE')]).agg({
+        'daily': 'sum',
+        'blood_a': 'sum',
+        'blood_b': 'sum',
+        'blood_o': 'sum',
+        'blood_ab': 'sum',
+        'social_civilian': 'sum',
+        'social_student': 'sum',
+        'social_policearmy': 'sum',
+        'donations_new': 'sum',
+        'donations_regular': 'sum',
+        'donations_irregular': 'sum'
+    }).reset_index()
 
-DONATIONS_FACILITY_DF = con.execute(DONATIONS_STATE_QUERY).df()
-monthly_aggregate_df = DONATIONS_FACILITY_DF.groupby(['state', pd.Grouper(key='date', freq='YE')]).agg({
-    'blood_a': 'sum',
-    'blood_b': 'sum',
-    'blood_o': 'sum',
-    'blood_ab': 'sum',
-    'social_civilian': 'sum',
-    'social_student': 'sum',
-    'social_policearmy': 'sum',
-    'donations_new': 'sum',
-    'donations_regular': 'sum',
-    'donations_irregular': 'sum'
-}).reset_index()
-monthly_aggregate_df['year_month'] = monthly_aggregate_df['date'].dt.strftime('%Y')
+    # getting state list
+    state_list = dons_st_df_aggregate['state'].unique().tolist()
+    SELECTED_STATE_TEXT = "Select a state: "
+    selected_state = st.selectbox(SELECTED_STATE_TEXT, state_list, index=3)
 
-# getting state list
-state_list = monthly_aggregate_df['state'].unique().tolist()
-SELECTED_STATE_TEXT = "Select a state: "
-selected_hospital = st.selectbox(SELECTED_STATE_TEXT, state_list, index=3)
+    # getting date range
+    min_date = dons_st_df_aggregate['date'].min().to_pydatetime()
+    max_date = dons_st_df_aggregate['date'].max().to_pydatetime()
+    (slider_min, slider_max) = st.slider(
+        "Date Range",
+        min_value = min_date,
+        max_value = max_date,
+        value = (min_date, max_date),
+        format= "YYYY/MM"
+    )
 
-# getting date range
-min_date = monthly_aggregate_df['date'].min().to_pydatetime()
-max_date = monthly_aggregate_df['date'].max().to_pydatetime()
-(slider_min, slider_max) = st.slider(
-    "Date Range",
-    min_value = min_date,
-    max_value = max_date,
-    value = (min_date, max_date),
-    format= "YYYY/MM"
-)
+    # Filtering dataframe based on selection above
+    filtered_dons_st_df = dons_st_df_aggregate[
+        (dons_st_df_aggregate['state'] == selected_state) &
+        (dons_st_df_aggregate['date'] >= slider_min) &
+        (dons_st_df_aggregate['date'] <= slider_max)
+    ]
 
-# Filtering dataframe based on selection above
-filtered_df = monthly_aggregate_df[
-    (monthly_aggregate_df['state'] == selected_hospital) &
-    (monthly_aggregate_df['date'] >= slider_min) &
-    (monthly_aggregate_df['date'] <= slider_max)
-]
+    # set index to 'date' for better plotting
+    filtered_dons_st_df.set_index('date', inplace=True)
+    blood_type_col = ['blood_a', 'blood_b', 'blood_o', 'blood_ab']
+    social_type_col = ['social_civilian', 'social_student', 'social_policearmy']
+    donation_type_col = ['donations_new', 'donations_regular', 'donations_irregular']
+    df_blood_type = filtered_dons_st_df[blood_type_col]
+    df_social_type = filtered_dons_st_df[social_type_col]
+    df_donation_frequency = filtered_dons_st_df[donation_type_col]
 
-# set index to 'date' for better plotting
-filtered_df.set_index('date', inplace=True)
-blood_type_col = ['blood_a', 'blood_b', 'blood_o', 'blood_ab']
-social_type_col = ['social_civilian', 'social_student', 'social_policearmy']
-donation_type_col = ['donations_new', 'donations_regular', 'donations_irregular']
-df_blood_type = filtered_df[blood_type_col]
-df_social_type = filtered_df[social_type_col]
-df_donation_frequency = filtered_df[donation_type_col]
+    # put chart into columns
+    col_line_chart_1, col_line_chart_2, col_line_chart_3 = st.columns(3)
 
-# put chart into columns
-col1, col2, col3 = st.columns(3)
+    with col_line_chart_1:
+        st.write("Donations by blood type")
+        st.line_chart(df_blood_type)
 
-with col1:
-    st.write("Donations by blood type")
-    st.line_chart(df_blood_type)
+    with col_line_chart_2:
+        st.write("Donations by social type")
+        st.line_chart(df_social_type)
 
-with col2:
-    st.write("Donations by social type")
-    st.line_chart(df_social_type)
-
-with col3:
-    st.write("Donations by donation frequency")
-    st.line_chart(df_donation_frequency)
+    with col_line_chart_3:
+        st.write("Donations by frequency")
+        st.line_chart(df_donation_frequency)
+    
+    st.markdown("### New Donor Metrics")
+    
+    NEW_DONORS_STATE_QUERY = """
+    SELECT
+        *
+    FROM newdonors_state;
+    """
+    
+    # NOTE: NEW_DONORS_STATE_DF shorthand is: n_donors_st_df
+    NEW_DONORS_STATE_DF = con.execute(NEW_DONORS_STATE_QUERY).df()
+    filtered_n_donors_st_df = NEW_DONORS_STATE_DF[
+        (NEW_DONORS_STATE_DF['state'] == selected_state) &
+        (NEW_DONORS_STATE_DF['date'] >= slider_min) &
+        (NEW_DONORS_STATE_DF['date'] <= slider_max)
+    ]
+    n_donors_st_df = filtered_n_donors_st_df.groupby(['state', pd.Grouper(key='date', freq='YE')]).agg({
+        '17-24': 'sum',
+        '25-29': 'sum',
+        '30-34': 'sum',
+        '40-44': 'sum',
+        '45-49': 'sum',
+        '50-54': 'sum',
+        '55-59': 'sum',
+        '60-64': 'sum'
+    }).reset_index().set_index('date')
+    n_donors_st_df_cols = ['17-24','25-29','30-34','40-44','45-49','50-54','55-59','60-64']
+    selected_age_groups = st.multiselect('Select age groups: ', n_donors_st_df_cols, default=n_donors_st_df_cols)
+    if selected_age_groups:
+        n_donors_st_df = n_donors_st_df[selected_age_groups]
+        st.write('New Donors By Age Group')
+        st.bar_chart(n_donors_st_df)
+    else:
+        st.write('*Please select at least one age group to render the chart*')
+    
+    st.markdown("> For some reason in streamlit there's an issue with year groupings as you can see, therefore the buckets we see should be 1 year less")
+    
