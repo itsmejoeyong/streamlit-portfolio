@@ -1,14 +1,15 @@
+from datetime import datetime
 import os
 
 import duckdb
 import pandas as pd
 import streamlit as st
 
-### Initializing DUCKDB ###
+########## Initializing DUCKDB ##########
 DUCKDB_DB = os.path.join("duckdb", "blood_donation_pipeline_v2.duckdb")
 con = duckdb.connect(database=DUCKDB_DB, read_only=True)
 
-### Initializing streamlit ###
+########## DROPDOWN LOGIC ##########
 st.set_page_config(layout="wide")
 st.title('Blood donation pipeline v2')
 
@@ -38,6 +39,7 @@ with st.expander("About the project & data"):
         
         st.dataframe(df)
 
+########## CHARTS LOGIC ##########
 
 st.subheader("Charts")
 DONATIONS_STATE_QUERY = """
@@ -58,7 +60,7 @@ FROM donations_state
 """
 
 DONATIONS_FACILITY_DF = con.execute(DONATIONS_STATE_QUERY).df()
-monthly_aggregate_df = DONATIONS_FACILITY_DF.groupby(['state', pd.Grouper(key='date', freq='Y')]).agg({
+monthly_aggregate_df = DONATIONS_FACILITY_DF.groupby(['state', pd.Grouper(key='date', freq='YE')]).agg({
     'blood_a': 'sum',
     'blood_b': 'sum',
     'blood_o': 'sum',
@@ -73,21 +75,26 @@ monthly_aggregate_df = DONATIONS_FACILITY_DF.groupby(['state', pd.Grouper(key='d
 monthly_aggregate_df['year_month'] = monthly_aggregate_df['date'].dt.strftime('%Y')
 
 # getting state list
-hospital_list = monthly_aggregate_df['state'].unique().tolist()
+state_list = monthly_aggregate_df['state'].unique().tolist()
 SELECTED_STATE_TEXT = "Select a state: "
-selected_hospital = st.selectbox(SELECTED_STATE_TEXT, hospital_list, index=3)
+selected_hospital = st.selectbox(SELECTED_STATE_TEXT, state_list, index=3)
 
 # getting date range
-min_date = monthly_aggregate_df['date'].min()
-max_date = monthly_aggregate_df['date'].max()
-SELECTED_DATE_RANGE_TEXT = "Select date range: "
-selected_date_range = st.date_input(SELECTED_DATE_RANGE_TEXT, value=(min_date, max_date))
+min_date = monthly_aggregate_df['date'].min().to_pydatetime()
+max_date = monthly_aggregate_df['date'].max().to_pydatetime()
+(slider_min, slider_max) = st.slider(
+    "Date Range",
+    min_value = min_date,
+    max_value = max_date,
+    value = (min_date, max_date),
+    format= "YYYY/MM"
+)
 
 # Filtering dataframe based on selection above
 filtered_df = monthly_aggregate_df[
     (monthly_aggregate_df['state'] == selected_hospital) &
-    (monthly_aggregate_df['date'] >= pd.to_datetime(selected_date_range[0])) &
-    (monthly_aggregate_df['date'] <= pd.to_datetime(selected_date_range[1]))
+    (monthly_aggregate_df['date'] >= slider_min) &
+    (monthly_aggregate_df['date'] <= slider_max)
 ]
 
 # set index to 'date' for better plotting
