@@ -1,4 +1,5 @@
 """module for dataframe operations"""
+from datetime import datetime
 import re
 import pandas as pd
 
@@ -17,7 +18,7 @@ class DataFrameCleaner:
         Returns:
             pd.DataFrame: pandas dataframe
         """
-        self.date_column: list[str] = date_column
+        self.date_columns: list[str] = date_column
 
         cleaning_methods = [
             self._format_columns,
@@ -75,9 +76,10 @@ class DataFrameCleaner:
         Returns:
             pd.DataFrame: pandas dataframe
         """
-        for date in self.date_column:
+        for date in self.date_columns:
             if date in df.columns:
                 df[date] = pd.to_datetime(df[date], errors="coerce")
+                df = df[df[date] <= datetime.now()]
         return df
 
     def _drop_dupes(self, df: pd.DataFrame) -> pd.DataFrame:
