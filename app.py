@@ -40,7 +40,7 @@ with st.expander("About the project & data"):
 
 ########## METRICS BY STATE ##########
 st.markdown("### Metrics")
-with st.expander("__Donation Metrics__"):
+with st.expander("__Donation Metrics By State__"):
     DONATIONS_STATE_QUERY = """
     SELECT
         date,
@@ -88,7 +88,8 @@ with st.expander("__Donation Metrics__"):
         min_value = min_date,
         max_value = max_date,
         value = (min_date, max_date),
-        format= "YYYY/MM"
+        format = "YYYY/MM",
+        key = "state date slider"
     )
 
     # Filtering dataframe based on selection above
@@ -148,7 +149,12 @@ with st.expander("__Donation Metrics__"):
         '60-64': 'sum'
     }).reset_index().set_index('date')
     n_donors_st_df_cols = ['17-24','25-29','30-34','40-44','45-49','50-54','55-59','60-64']
-    selected_age_groups = st.multiselect('Select age groups: ', n_donors_st_df_cols, default=n_donors_st_df_cols)
+    selected_age_groups = st.multiselect(
+        'Select age groups: ', 
+        n_donors_st_df_cols, 
+        default=n_donors_st_df_cols,
+        key = 'state multiselect'
+    )
     if selected_age_groups:
         n_donors_st_df = n_donors_st_df[selected_age_groups]
         st.write('New Donors By Age Group')
@@ -157,4 +163,129 @@ with st.expander("__Donation Metrics__"):
         st.write('*Please select at least one age group to render the chart*')
     
     st.markdown("> For some reason in streamlit there's an issue with year groupings as you can see, therefore the buckets we see should be 1 year less")
+
+######### METRICS BY HOSPITALS ##########
+with st.expander("__Donation Metrics By Hospital__"):
+    DONATIONS_HOSPITAL_QUERY = """
+    SELECT
+        date,
+        hospital,
+        daily,
+        blood_a,
+        blood_b,
+        blood_o,
+        blood_ab,
+        social_civilian,
+        social_student,
+        social_policearmy,
+        donations_new,
+        donations_regular,
+        donations_irregular
+    FROM donations_facility
+    """
+
+    # NOTE: DONATIONS_HOSPITAL_DF shorthand is: dons_st_df
+    DONATIONS_HOSPITAL_DF = con.execute(DONATIONS_HOSPITAL_QUERY).df()
+    dons_st_df_aggregate = DONATIONS_HOSPITAL_DF.groupby(['hospital', pd.Grouper(key='date', freq='YE')]).agg({
+        'daily': 'sum',
+        'blood_a': 'sum',
+        'blood_b': 'sum',
+        'blood_o': 'sum',
+        'blood_ab': 'sum',
+        'social_civilian': 'sum',
+        'social_student': 'sum',
+        'social_policearmy': 'sum',
+        'donations_new': 'sum',
+        'donations_regular': 'sum',
+        'donations_irregular': 'sum'
+    }).reset_index()
+
+    # getting hospital list
+    hospital_list = dons_st_df_aggregate['hospital'].unique().tolist()
+    SELECTED_HOSPITAL_TEXT = "Select a hospital: "
+    selected_hospital = st.selectbox(SELECTED_HOSPITAL_TEXT, hospital_list, index=21)
+
+    # getting date range
+    min_date = dons_st_df_aggregate['date'].min().to_pydatetime()
+    max_date = dons_st_df_aggregate['date'].max().to_pydatetime()
+    (slider_min, slider_max) = st.slider(
+        "Date Range",
+        min_value = min_date,
+        max_value = max_date,
+        value = (min_date, max_date),
+        format = "YYYY/MM",
+        key = 'hospital date slider'
+    )
+
+    # Filtering dataframe based on selection above
+    filtered_dons_st_df = dons_st_df_aggregate[
+        (dons_st_df_aggregate['hospital'] == selected_hospital) &
+        (dons_st_df_aggregate['date'] >= slider_min) &
+        (dons_st_df_aggregate['date'] <= slider_max)
+    ]
+
+    # set index to 'date' for better plotting
+    filtered_dons_st_df.set_index('date', inplace=True)
+    blood_type_col = ['blood_a', 'blood_b', 'blood_o', 'blood_ab']
+    social_type_col = ['social_civilian', 'social_student', 'social_policearmy']
+    donation_type_col = ['donations_new', 'donations_regular', 'donations_irregular']
+    df_blood_type = filtered_dons_st_df[blood_type_col]
+    df_social_type = filtered_dons_st_df[social_type_col]
+    df_donation_frequency = filtered_dons_st_df[donation_type_col]
+
+    # put chart into columns
+    col_line_chart_1, col_line_chart_2, col_line_chart_3 = st.columns(3)
+
+    with col_line_chart_1:
+        st.write("Donations by blood type")
+        st.line_chart(df_blood_type)
+
+    with col_line_chart_2:
+        st.write("Donations by social type")
+        st.line_chart(df_social_type)
+
+    with col_line_chart_3:
+        st.write("Donations by frequency")
+        st.line_chart(df_donation_frequency)
     
+    st.markdown("### New Donor Metrics")
+    
+    NEW_DONORS_HOSPITAL_QUERY = """
+    SELECT
+        *
+    FROM newdonors_facility;
+    """
+    
+    # NOTE: NEW_DONORS_HOSPITAL_DF shorthand is: n_donors_st_df
+    NEW_DONORS_HOSPITAL_DF = con.execute(NEW_DONORS_HOSPITAL_QUERY).df()
+    filtered_n_donors_st_df = NEW_DONORS_HOSPITAL_DF[
+        (NEW_DONORS_HOSPITAL_DF['hospital'] == selected_hospital) &
+        (NEW_DONORS_HOSPITAL_DF['date'] >= slider_min) &
+        (NEW_DONORS_HOSPITAL_DF['date'] <= slider_max)
+    ]
+    n_donors_st_df = filtered_n_donors_st_df.groupby(['hospital', pd.Grouper(key='date', freq='YE')]).agg({
+        '17-24': 'sum',
+        '25-29': 'sum',
+        '30-34': 'sum',
+        '40-44': 'sum',
+        '45-49': 'sum',
+        '50-54': 'sum',
+        '55-59': 'sum',
+        '60-64': 'sum'
+    }).reset_index().set_index('date')
+    n_donors_st_df_cols = ['17-24','25-29','30-34','40-44','45-49','50-54','55-59','60-64']
+    selected_age_groups = st.multiselect(
+        'Select age groups: ', 
+        n_donors_st_df_cols, 
+        default=n_donors_st_df_cols,
+        key = 'hospital multiselect'
+    )
+    if selected_age_groups:
+        n_donors_st_df = n_donors_st_df[selected_age_groups]
+        st.write('New Donors By Age Group')
+        st.bar_chart(n_donors_st_df)
+    else:
+        st.write('*Please select at least one age group to render the chart*')
+    
+    st.markdown("> For some reason in streamlit there's an issue with year groupings as you can see, therefore the buckets we see should be 1 year less")
+  
