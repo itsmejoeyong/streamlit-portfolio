@@ -101,16 +101,23 @@ with st.expander("__Donation Metrics By State__"):
 
     # set index to 'date' for better plotting
     filtered_dons_st_df.set_index('date', inplace=True)
+    daily_type_col = ['daily']
     blood_type_col = ['blood_a', 'blood_b', 'blood_o', 'blood_ab']
     social_type_col = ['social_civilian', 'social_student', 'social_policearmy']
     donation_type_col = ['donations_new', 'donations_regular', 'donations_irregular']
+    df_daily = filtered_dons_st_df[daily_type_col]
     df_blood_type = filtered_dons_st_df[blood_type_col]
     df_social_type = filtered_dons_st_df[social_type_col]
     df_donation_frequency = filtered_dons_st_df[donation_type_col]
 
+    st.write('Total Blood Donations')
+    st.area_chart(df_daily, color=(244, 67, 54, 0.7))
+    
+    "---"
+    
     # put chart into columns
     col_line_chart_1, col_line_chart_2, col_line_chart_3 = st.columns(3)
-
+    
     with col_line_chart_1:
         st.write("Donations by blood type")
         st.line_chart(df_blood_type)
@@ -122,6 +129,8 @@ with st.expander("__Donation Metrics By State__"):
     with col_line_chart_3:
         st.write("Donations by frequency")
         st.line_chart(df_donation_frequency)
+    
+    "---"
     
     st.markdown("### New Donor Metrics")
     
@@ -226,12 +235,19 @@ with st.expander("__Donation Metrics By Hospital__"):
 
     # set index to 'date' for better plotting
     filtered_dons_st_df.set_index('date', inplace=True)
+    daily_type_col = ['daily']
     blood_type_col = ['blood_a', 'blood_b', 'blood_o', 'blood_ab']
     social_type_col = ['social_civilian', 'social_student', 'social_policearmy']
     donation_type_col = ['donations_new', 'donations_regular', 'donations_irregular']
+    df_daily = filtered_dons_st_df[daily_type_col]
     df_blood_type = filtered_dons_st_df[blood_type_col]
     df_social_type = filtered_dons_st_df[social_type_col]
     df_donation_frequency = filtered_dons_st_df[donation_type_col]
+    
+    st.write('Total Blood Donations')
+    st.area_chart(df_daily, color=(244, 67, 54, 0.7))
+    
+    "---"
 
     # put chart into columns
     col_line_chart_1, col_line_chart_2, col_line_chart_3 = st.columns(3)
