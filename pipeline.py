@@ -17,8 +17,11 @@ FILE_URLS = [
 DATES = ["date", "visit_date"]
 
 LOAD_FOLDER = "load"
+DUCKDB_FOLDER = "duckdb"
 if not os.path.exists(LOAD_FOLDER):
     os.makedirs(LOAD_FOLDER)
+if not os.path.exists(DUCKDB_FOLDER):
+    os.makedirs(DUCKDB_FOLDER)
 
 DUCKDB_CONN = duckdb.connect(database='duckdb/blood_donation_pipeline_v2.duckdb')
 
