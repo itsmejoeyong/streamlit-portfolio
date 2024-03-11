@@ -1,6 +1,5 @@
 # Streamlit Portfolio
-Welcome to my github repo! 
-You can access the webpage via my website: [here](itsmejoeyong.com)
+Welcome to my github repo! You can access the webpage via my website: itsmejoeyong.com
 
 This is the main branch of my streamlit portfolio, all other branches (except dev) have been structured to more easily convey the logic & codebase.
 
