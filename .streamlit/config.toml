@@ -1,5 +1,4 @@
 [server]
 enableCORS = false
 enableXsrfProtection = false
-headless = true
 port = 6969
