@@ -117,3 +117,6 @@ def homepage():
 
     # ----- Projects -----
     st.markdown("### Projects")
+    st.info("""
+    Expand the sidebar on the top left and select the projects you want to view!
+    """)
