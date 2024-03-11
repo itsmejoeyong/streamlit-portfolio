@@ -45,7 +45,6 @@ COMPANIES: dict = {
 
 def homepage():
     # ----- HEADER & BIO -----
-
     center_header("Joe Yong")
     center_paragraph(DESCRIPTION)
     st.info("""
@@ -117,3 +116,8 @@ def homepage():
 
     # ----- Projects -----
     st.markdown("### Projects")
+    st.info("""
+    """)
+
+
+homepage()
