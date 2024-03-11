@@ -7,22 +7,22 @@ from src.streamlit_text_functions import (
 import streamlit as st
 
 # ----- CONSTANTS -----
-PAGE_TITLE = "DIGITAL Portfolio | Joe Yong"
-NAME = "Joe Yong"
-DESCRIPTION = """
+PAGE_TITLE: str = "DIGITAL Portfolio | Joe Yong"
+NAME: str = "Joe Yong"
+DESCRIPTION: str = """
 Data Engineer in Pandai, an Edtech startup helping students getting better grades in Malaysia!
 """
-SOCIAL_MEDIA = {
+SOCIAL_MEDIA: dict = {
     "LinkedIn": "https://www.linkedin.com/in/itsmejoeyong/",
     "GitHub": "https://github.com/itsmejoeyong",
 }
-MARKDOWN_LINKEDIN_LINK = f"[LinkedIn]({SOCIAL_MEDIA["LinkedIn"]})"
-MARKDOWN_GITHUB_LINK = f"[GitHub]({SOCIAL_MEDIA["GitHub"]})"
-EMAIL = "joeanselmyz@gmail.com"
-HTML_EMAIL_LINK = f'<a href="mailto:{EMAIL}">Email</a>'
-PHONE_NO = 60182307282
-WHATSAPP_LINK = f"[Whatsapp](https://web.whatsapp.com/send?phone={PHONE_NO})"
-COMPANIES = {
+MARKDOWN_LINKEDIN_LINK: str = f"[LinkedIn]({SOCIAL_MEDIA["LinkedIn"]})"
+MARKDOWN_GITHUB_LINK: str = f"[GitHub]({SOCIAL_MEDIA["GitHub"]})"
+EMAIL: str = "joeanselmyz@gmail.com"
+HTML_EMAIL_LINK: str = f'<a href="mailto:{EMAIL}">Email</a>'
+PHONE_NO: int = 60182307282
+WHATSAPP_LINK: str = f"[Whatsapp](https://web.whatsapp.com/send?phone={PHONE_NO})"
+COMPANIES: dict = {
     "pandai": [
         {
             "name": "Pandai Education Sdn Bhd",
