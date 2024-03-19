@@ -161,3 +161,4 @@ cython_debug/
 load/
 duckdb/
 *.bkp
+*.ipynb
