@@ -367,11 +367,181 @@ ORDER BY
 granular_average_months_between_visits_table = con.execute(granular_average_months_between_donations_query).df()
 st.dataframe(granular_average_months_between_visits_table)
 
+# number of months before a donor churns (doesn't donate in the next 365 days)
+# NOTE: implement another version where churn = no donation within the next year (not churn = once a year donation)
+granular_average_months_before_churn_query = """
+WITH next_visit AS(
+SELECT
+    donor_id,
+    birth_date,
+    visit_date::DATE as visit_date,
+    LEAD(visit_date::DATE) OVER(PARTITION BY donor_id ORDER BY visit_date) AS next_visit_date
+FROM
+    ds_data_granular
+),
 
+age_on_visit AS(
+SELECT
+    donor_id,
+    visit_date,
+    next_visit_date,
+    ABS(visit_date - next_visit_date) AS days_between_visit,
+    EXTRACT(YEAR FROM visit_date) - birth_date AS age_on_visit
+FROM    
+    next_visit 
+),
+
+age_group AS(
+    SELECT
+    *,
+    CASE
+        WHEN age_on_visit < 20 THEN '<20'
+        WHEN age_on_visit BETWEEN 20 AND 29 THEN '20-29'
+        WHEN age_on_visit BETWEEN 30 AND 39 THEN '30-39'
+        WHEN age_on_visit BETWEEN 40 AND 49 THEN '40-49'
+        WHEN age_on_visit BETWEEN 50 AND 59 THEN '50-59'
+        WHEN age_on_visit BETWEEN 60 AND 69 THEN '60-69'
+        WHEN age_on_visit BETWEEN 70 AND 79 THEN '70-79'
+        WHEN age_on_visit > 80 THEN '80+'
+        END AS age_group,
+    CASE
+        WHEN age_on_visit < 20 THEN 1
+        WHEN age_on_visit BETWEEN 20 AND 29 THEN 2
+        WHEN age_on_visit BETWEEN 30 AND 39 THEN 3
+        WHEN age_on_visit BETWEEN 40 AND 49 THEN 4
+        WHEN age_on_visit BETWEEN 50 AND 59 THEN 5
+        WHEN age_on_visit BETWEEN 60 AND 69 THEN 6
+        WHEN age_on_visit BETWEEN 70 AND 79 THEN 7
+        WHEN age_on_visit > 80 THEN 8
+        END AS age_group_order
+FROM
+    age_on_visit
+),
+
+rolling_sum_of_total_visits AS(
+SELECT
+    *,
+    SUM(days_between_visit) OVER(PARTITION BY donor_id ORDER BY visit_date) AS rolling_total_days_between_visit,
+FROM
+    age_group
+),
+
+churns AS(
+SELECT
+    *,
+    IF(days_between_visit > 365, 1, 0) AS is_churn
+FROM
+    rolling_sum_of_total_visits
+WHERE
+    is_churn = 1
+)
+
+SELECT
+    age_group,
+    FLOOR(AVG(rolling_total_days_between_visit / 30)) AS average_months_to_churn
+FROM
+    churns
+GROUP BY
+    age_group,
+    age_group_order
+ORDER BY
+    age_group_order
+"""
+granular_average_months_before_churn_table = con.execute(granular_average_months_before_churn_query).df()
+st.dataframe(granular_average_months_before_churn_table)
+
+granular_average_months_before_churn_query_v2 = """
+WITH next_visit AS(
+SELECT
+    donor_id,
+    birth_date,
+    visit_date::DATE as visit_date,
+    LEAD(visit_date::DATE) OVER(PARTITION BY donor_id ORDER BY visit_date) AS next_visit_date
+FROM
+    ds_data_granular
+),
+
+age_on_visit AS(
+SELECT
+    donor_id,
+    visit_date,
+    next_visit_date,
+    ABS(visit_date - next_visit_date) AS days_between_visit,
+    EXTRACT(YEAR FROM visit_date) - birth_date AS age_on_visit
+FROM    
+    next_visit 
+),
+
+age_group AS(
+    SELECT
+    *,
+    CASE
+        WHEN age_on_visit < 20 THEN '<20'
+        WHEN age_on_visit BETWEEN 20 AND 29 THEN '20-29'
+        WHEN age_on_visit BETWEEN 30 AND 39 THEN '30-39'
+        WHEN age_on_visit BETWEEN 40 AND 49 THEN '40-49'
+        WHEN age_on_visit BETWEEN 50 AND 59 THEN '50-59'
+        WHEN age_on_visit BETWEEN 60 AND 69 THEN '60-69'
+        WHEN age_on_visit BETWEEN 70 AND 79 THEN '70-79'
+        WHEN age_on_visit > 80 THEN '80+'
+        END AS age_group,
+    CASE
+        WHEN age_on_visit < 20 THEN 1
+        WHEN age_on_visit BETWEEN 20 AND 29 THEN 2
+        WHEN age_on_visit BETWEEN 30 AND 39 THEN 3
+        WHEN age_on_visit BETWEEN 40 AND 49 THEN 4
+        WHEN age_on_visit BETWEEN 50 AND 59 THEN 5
+        WHEN age_on_visit BETWEEN 60 AND 69 THEN 6
+        WHEN age_on_visit BETWEEN 70 AND 79 THEN 7
+        WHEN age_on_visit > 80 THEN 8
+        END AS age_group_order
+FROM
+    age_on_visit
+),
+
+rolling_sum_of_total_visits AS(
+SELECT
+    *,
+    SUM(days_between_visit) OVER(PARTITION BY donor_id ORDER BY visit_date) AS rolling_total_days_between_visit,
+FROM
+    age_group
+),
+
+days_before_churn AS(
+SELECT
+    *,
+    CONCAT(EXTRACT(YEAR FROM visit_date) + 1, '-12-31')::DATE - visit_date AS days_before_next_churn
+FROM
+    rolling_sum_of_total_visits
+),
+
+churns AS(
+SELECT
+    *,
+    IF(days_between_visit > days_before_next_churn, 1, 0) AS is_churn
+FROM
+    days_before_churn
+WHERE
+    is_churn = 1
+)
+
+SELECT
+    age_group,
+    FLOOR(AVG(rolling_total_days_between_visit / 30)) AS average_months_to_churn
+FROM
+    churns
+GROUP BY
+    age_group,
+    age_group_order
+ORDER BY
+    age_group_order
+"""
+granular_average_months_before_churn_table_v2 = con.execute(granular_average_months_before_churn_query_v2).df()
+st.dataframe(granular_average_months_before_churn_table_v2)
 
 # by age:
-# average months between donation
-# average months/visit before churn
-# age at that donation date (and the frequency of donations at that age)
+# # average months between donation
+# # average months/visit before churn
+# # age at that donation date (and the frequency of donations at that age)
 # donations by seasonality
 # 
