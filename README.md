@@ -5,7 +5,7 @@ In this second interation I've built a more monolithic architecture, in which al
 
 ---
 ### Workflow
-![workflow](.drawio\workflow.png)
+![workflow](.drawio/workflow.png)
 
 # Todo
 - Additional churn/retention analysis on parquet file.
