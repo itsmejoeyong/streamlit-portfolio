@@ -18,9 +18,10 @@ The second version of our Blood Donation Pipeline, a major refactor, code & tech
 The data is regarding blood donations that's made available through Ministry of Health (MOH).
 """
 with st.expander("About the project & data"):
+    st.write("")
     st.write(EXPANDER_TEXT)
     
-    "---"
+    st.divider()
     
     st.subheader("Preview the data")
     # Query db information schema to get table list
@@ -41,6 +42,7 @@ with st.expander("About the project & data"):
 ########## METRICS BY STATE ##########
 st.markdown("### Metrics")
 with st.expander("__Donation Metrics By State__"):
+    st.write("")
     DONATIONS_STATE_QUERY = """
     SELECT
         date,
@@ -113,7 +115,7 @@ with st.expander("__Donation Metrics By State__"):
     st.write('Total Blood Donations')
     st.area_chart(df_daily, color=(244, 67, 54, 0.7))
     
-    "---"
+    st.divider()
     
     # put chart into columns
     col_line_chart_1, col_line_chart_2, col_line_chart_3 = st.columns(3)
@@ -130,7 +132,7 @@ with st.expander("__Donation Metrics By State__"):
         st.write("Donations by frequency")
         st.line_chart(df_donation_frequency)
     
-    "---"
+    st.divider()
     
     st.markdown("### New Donor Metrics")
     
@@ -175,6 +177,7 @@ with st.expander("__Donation Metrics By State__"):
 
 ######### METRICS BY HOSPITALS ##########
 with st.expander("__Donation Metrics By Hospital__"):
+    st.write("")
     DONATIONS_HOSPITAL_QUERY = """
     SELECT
         date,
@@ -247,7 +250,7 @@ with st.expander("__Donation Metrics By Hospital__"):
     st.write('Total Blood Donations')
     st.area_chart(df_daily, color=(244, 67, 54, 0.7))
     
-    "---"
+    st.divider()
 
     # put chart into columns
     col_line_chart_1, col_line_chart_2, col_line_chart_3 = st.columns(3)
@@ -306,7 +309,22 @@ with st.expander("__Donation Metrics By Hospital__"):
     st.markdown("> For some reason in streamlit there's an issue with year groupings as you can see, therefore the buckets we see should be 1 year less")
 
 st.divider()
-granular_average_months_between_donations_query = """
+
+age_group_to_age_query = {
+    '20-29': 'BETWEEN 20 AND 29',
+    '30-39': 'BETWEEN 30 AND 39',
+    '40-49': 'BETWEEN 40 AND 49',
+    '50-59': 'BETWEEN 50 AND 59',
+    '60-69': 'BETWEEN 60 AND 69',
+    '70-79': 'BETWEEN 70 AND 79',
+    '80+': '>= 80'
+}
+selected_age_group = st.selectbox("select age group", ['20-29','30-39','40-49','50-59','60-69','70-79', '80+'])
+age_filter_query = age_group_to_age_query.get(selected_age_group)
+
+st.header("")
+
+granular_average_months_between_donations_query = f"""
 WITH next_visit AS(
 SELECT
     birth_date,
@@ -321,7 +339,9 @@ SELECT
     ABS(visit_date - next_visit_date) AS days_between_visit,
     EXTRACT(YEAR FROM visit_date) - birth_date AS age_on_visit
 FROM    
-    next_visit 
+    next_visit
+WHERE
+    age_on_visit {age_filter_query}
 ),
 
 age_group AS(
@@ -366,10 +386,9 @@ ORDER BY
     age_group_order
 """
 granular_average_months_between_visits_table = con.execute(granular_average_months_between_donations_query).df()
-st.dataframe(granular_average_months_between_visits_table)
 
 # NOTE: churn definition: users who never donate blood once every 2 years
-granular_average_months_before_churn_query_v2 = """
+granular_average_months_before_churn_query_v2 = f"""
 WITH next_visit AS(
 SELECT
     donor_id,
@@ -389,6 +408,8 @@ SELECT
     EXTRACT(YEAR FROM visit_date) - birth_date AS age_on_visit
 FROM    
     next_visit 
+WHERE
+    age_on_visit {age_filter_query}
 ),
 
 age_group AS(
@@ -457,9 +478,8 @@ ORDER BY
     age_group_order
 """
 granular_average_months_before_churn_table_v2 = con.execute(granular_average_months_before_churn_query_v2).df()
-st.dataframe(granular_average_months_before_churn_table_v2)
 
-granular_average_donations_by_age_group_query = """
+granular_average_donations_by_age_group_query = f"""
 WITH age_on_visit AS(
     SELECT
     donor_id,
@@ -467,6 +487,8 @@ WITH age_on_visit AS(
     EXTRACT(YEAR FROM visit_date) - birth_date AS age_on_visit
 FROM
     ds_data_granular
+WHERE
+    age_on_visit {age_filter_query}
 ),
 
 age_group AS(
@@ -525,9 +547,8 @@ ORDER BY
     age_group_order
 """
 granular_average_donations_by_age_group_table = con.execute(granular_average_donations_by_age_group_query).df()
-st.dataframe(granular_average_donations_by_age_group_table)
 
-granular_cohorts_query = """
+granular_cohorts_query = f"""
 WITH first_year_donation AS(
 SELECT
     donor_id,
@@ -538,6 +559,8 @@ FROM
 GROUP BY
     donor_id,
     birth_date
+HAVING
+    age_on_visit {age_filter_query}
 ),
 
 yearly_donations AS(
@@ -551,6 +574,8 @@ FROM
 JOIN
     first_year_donation AS fd
     USING(donor_id)
+WHERE
+    age_on_visit {age_filter_query}
 ),
 
 cohorts AS(
@@ -667,6 +692,15 @@ FROM
 """
 
 granular_cohorts_table = con.execute(granular_cohorts_query).df()
-st.dataframe(granular_cohorts_table)
 
-st.divider()
+# eating dinner
+metric1, metric2, metric3 = st.columns(3)
+with metric1:
+    st.metric("Average months between visits", granular_average_months_between_visits_table['average_months_between_visits'])
+with metric2:
+    st.metric("Average months to churn", granular_average_months_before_churn_table_v2['average_months_to_churn'])
+with metric3:
+    st.metric("Average donations within age group", granular_average_donations_by_age_group_table['avg_donations'])
+    
+
+st.dataframe(granular_cohorts_table)
