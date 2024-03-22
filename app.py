@@ -310,6 +310,8 @@ with st.expander("__Donation Metrics By Hospital__"):
 
 st.divider()
 
+st.markdown("### Granular Dataset Analysis")
+
 age_group_to_age_query = {
     '20-29': 'BETWEEN 20 AND 29',
     '30-39': 'BETWEEN 30 AND 39',
@@ -684,14 +686,13 @@ ORDER BY
 )
 
 SELECT
-    age_group,
     nth_year,
     average_retention_rate
 FROM
     retention_by_nth_year
 """
 
-granular_cohorts_table = con.execute(granular_cohorts_query).df()
+granular_cohorts_df = con.execute(granular_cohorts_query).df()
 
 # eating dinner
 metric1, metric2, metric3 = st.columns(3)
@@ -701,6 +702,14 @@ with metric2:
     st.metric("Average months to churn", granular_average_months_before_churn_table_v2['average_months_to_churn'])
 with metric3:
     st.metric("Average donations within age group", granular_average_donations_by_age_group_table['avg_donations'])
-    
 
-st.dataframe(granular_cohorts_table)
+granular_cohorts_df = granular_cohorts_df.set_index('nth_year')
+st.write("average % retention rate on nth year")
+st.bar_chart(granular_cohorts_df, color=(244, 67, 54, 0.7))
+st.info("""
+- churn definition: donor who hasn't made a donation within 2 years since last donation
+- average retention after nth year: the % of donor retention on the nth year from the 1st year (for example, only ~20% of donors in age group 20-29 from the first year made a donation in the 2nd year)
+> be patient! nearly 10 million rows on a 1 core 2 gig machine takes some time even with duckdb's columnar aggregations :)
+
+> the dataset being analyzed is ds_data_granular, you can open the "About the project & data" dropdown and inspect
+""")
