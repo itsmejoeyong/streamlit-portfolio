@@ -8,5 +8,8 @@ In this second interation I've built a more monolithic architecture, in which al
 ![workflow](.drawio/workflow.png)
 
 # Notes
-> Performance could be further improved by optimizing transformations to use Polars instead of DuckDB & Pandas based on benchmarks: 
-> - https://h2oai.github.io/db-benchmark/
+Performance could be further improved by optimizing transformations to use Polars instead of DuckDB & Pandas based on benchmarks: 
+- https://h2oai.github.io/db-benchmark/
+
+note to self:
+src/dataframe*.py could be refactored more to adhere more closely to SOLID principles. 
