@@ -1,8 +1,8 @@
 """main entrypoint to run the pipeline"""
 import os
 
-from modules.dataframe_cleaner import DataFrameCleaner
-from modules.dataframe_manager import DataFrameManager
+from src.dataframe_cleaner import DataFrameCleaner
+from src.dataframe_manager import DataFrameManager
 
 import duckdb
 
@@ -30,9 +30,9 @@ def main() -> None:
         df_cleaner = DataFrameCleaner()
         df_manager = DataFrameManager(url)
         df_name = df_manager.name
-        load_folder = os.path.join(LOAD_FOLDER, f"{df_name}.parquet")
 
         df = df_manager.df
+        # duckdb will select from this variable
         cleaned_df = df_cleaner.clean_dataframe(df, DATES)
         
         query = f"CREATE OR REPLACE TABLE {df_name} AS SELECT * FROM cleaned_df;"
