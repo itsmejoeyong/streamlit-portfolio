@@ -7,6 +7,6 @@ In this second interation I've built a more monolithic architecture, in which al
 ### Workflow
 ![workflow](.drawio/workflow.png)
 
-# Todo
-- Additional churn/retention analysis on parquet file.
-- setup cron job & bash script to refresh data.
+# Notes
+> Performance could be further improved by optimizing transformations to use Polars instead of DuckDB & Pandas based on benchmarks: 
+> - https://h2oai.github.io/db-benchmark/
