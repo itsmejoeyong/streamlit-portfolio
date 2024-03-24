@@ -1,4 +1,36 @@
-# Dev
+# Streamlit Portfolio
 Welcome to my github repo! You can access the webpage via my website: itsmejoeyong.com
 
-Dev will always be a copy of the main branch. Dev's main concern is to handle merges from other feature branches onto itself, before merging onto main. This isolates any bugs & errors.
+This is the main branch of my streamlit portfolio, all other branches (except dev) have been structured to more easily convey the logic & codebase.
+
+The main branch essentially integrates all the other branches & features into a sidebar on the top left, with dynamic link generation for each project. For more information press the provided link in the main webpage.
+
+```
+root/
+│
+├── .streamlit/
+│   └── config.toml   
+│       # contains streamlit configurations
+│
+├── src/
+│   ├── pages/
+│   │   ├── projects/
+│   │   │   ├── src/
+│   │   │   │   # contains project src code, mainly abstracts logic away from each projects app.py
+│   │   │   │   
+│   │   │   └── app.py
+│   │   │       # each projects main entrypoint
+│   │   │
+│   │   └── homepage.py
+│   │       # homepage project main entrypoint
+│   │
+│   └── streamlit_text_functions.py 
+│       # contains functions to manipulate streamlit text more easily
+│
+├── app.py
+│   # main logic & entrypoint
+│
+├── requirements.txt  
+│   # Python requirements file
+...
+```
