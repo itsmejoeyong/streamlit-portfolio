@@ -5,6 +5,8 @@ This is the main branch of my streamlit portfolio, all other branches (except de
 
 The main branch essentially integrates all the other branches & features into a sidebar on the top left, with dynamic link generation for each project. For more information press the provided link in the main webpage.
 
+New data will be fetched for any data-related projects on a daily basis.
+
 ```
 root/
 │
@@ -34,3 +36,6 @@ root/
 │   # Python requirements file
 ...
 ```
+
+# NOTES
+> pipeline.py is used to refresh the data from any project that requires fresh data to be fetched, further efforts will be put into abstracting multiple project's pipeline.py into a single entrypoint.
