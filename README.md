@@ -14,3 +14,6 @@ This branch's main concern is organize the contents so that it can integrate wel
 ---
 ### Workflow
 ![workflow](.drawio/workflow.png)
+
+### NOTE
+I'm aware that the analysis on nearly 10 million rows takes a bit of time, looking to implement a datamart implementation on pipeline.py's runtime to get the aggregated values. App would only need to filter the result set.
