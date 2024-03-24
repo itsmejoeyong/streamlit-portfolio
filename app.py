@@ -7,7 +7,10 @@ import streamlit as st
 st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 
 ##### CONSTS #####
-PAGE_NAMES_TO_FUNCS: dict = {"Blood Donation Pipeline": display_blood_donation_pipeline}
+PAGE_NAMES_TO_FUNCS: dict = {
+    "Homepage": homepage,
+    "Blood Donation Pipeline": display_blood_donation_pipeline,
+}
 GITHUB_REPOS = {
     "Homepage": {
         "repository": "https://github.com/itsmejoeyong/streamlit-portfolio/tree/homepage",

@@ -162,3 +162,4 @@ load/
 duckdb/
 *.bkp
 *.ipynb
+log*/
