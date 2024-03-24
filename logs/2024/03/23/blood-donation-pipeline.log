@@ -1,0 +1,38 @@
+2024-03-23 16:42:03 : pipeline.py : INFO : beginning of log: running pipeline.py
+2024-03-23 16:42:03 : dataframe_manager.py : INFO : starting process to initlaize a dataframe
+2024-03-23 16:42:05 : dataframe_cleaner.py : INFO : Starting dataframe cleaning process
+2024-03-23 16:42:05 : dataframe_cleaner.py : INFO : formatting columns to use snake_case case type
+2024-03-23 16:42:05 : dataframe_cleaner.py : INFO : validating integer columns
+2024-03-23 16:42:05 : dataframe_cleaner.py : INFO : validating date columns
+2024-03-23 16:42:05 : dataframe_cleaner.py : INFO : dropping duplicates
+2024-03-23 16:42:05 : dataframe_cleaner.py : INFO : Dataframe cleaning process completed
+2024-03-23 16:42:05 : dataframe_manager.py : INFO : starting process to initlaize a dataframe
+2024-03-23 16:42:07 : dataframe_cleaner.py : INFO : Starting dataframe cleaning process
+2024-03-23 16:42:07 : dataframe_cleaner.py : INFO : formatting columns to use snake_case case type
+2024-03-23 16:42:07 : dataframe_cleaner.py : INFO : validating integer columns
+2024-03-23 16:42:07 : dataframe_cleaner.py : INFO : validating date columns
+2024-03-23 16:42:07 : dataframe_cleaner.py : INFO : dropping duplicates
+2024-03-23 16:42:07 : dataframe_cleaner.py : INFO : Dataframe cleaning process completed
+2024-03-23 16:42:07 : dataframe_manager.py : INFO : starting process to initlaize a dataframe
+2024-03-23 16:42:09 : dataframe_cleaner.py : INFO : Starting dataframe cleaning process
+2024-03-23 16:42:09 : dataframe_cleaner.py : INFO : formatting columns to use snake_case case type
+2024-03-23 16:42:09 : dataframe_cleaner.py : INFO : validating integer columns
+2024-03-23 16:42:09 : dataframe_cleaner.py : INFO : validating date columns
+2024-03-23 16:42:09 : dataframe_cleaner.py : INFO : dropping duplicates
+2024-03-23 16:42:09 : dataframe_cleaner.py : INFO : Dataframe cleaning process completed
+2024-03-23 16:42:09 : dataframe_manager.py : INFO : starting process to initlaize a dataframe
+2024-03-23 16:42:10 : dataframe_cleaner.py : INFO : Starting dataframe cleaning process
+2024-03-23 16:42:10 : dataframe_cleaner.py : INFO : formatting columns to use snake_case case type
+2024-03-23 16:42:10 : dataframe_cleaner.py : INFO : validating integer columns
+2024-03-23 16:42:10 : dataframe_cleaner.py : INFO : validating date columns
+2024-03-23 16:42:10 : dataframe_cleaner.py : INFO : dropping duplicates
+2024-03-23 16:42:10 : dataframe_cleaner.py : INFO : Dataframe cleaning process completed
+2024-03-23 16:42:11 : dataframe_manager.py : INFO : starting process to initlaize a dataframe
+2024-03-23 16:42:13 : dataframe_manager.py : INFO : error reading dataframe: 'utf-8' codec can't decode byte 0xe0 in position 7: invalid continuation byte, using next reader
+2024-03-23 16:42:17 : dataframe_cleaner.py : INFO : Starting dataframe cleaning process
+2024-03-23 16:42:17 : dataframe_cleaner.py : INFO : formatting columns to use snake_case case type
+2024-03-23 16:42:17 : dataframe_cleaner.py : INFO : validating integer columns
+2024-03-23 16:42:17 : dataframe_cleaner.py : INFO : validating date columns
+2024-03-23 16:42:19 : dataframe_cleaner.py : INFO : dropping duplicates
+2024-03-23 16:42:22 : dataframe_cleaner.py : INFO : Dataframe cleaning process completed
+2024-03-23 16:42:24 : pipeline.py : INFO : end of log: pipeline.py completed successfully
