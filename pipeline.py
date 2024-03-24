@@ -4,8 +4,8 @@ from datetime import datetime
 import logging
 import os
 
-from src.dataframe_cleaner import DataFrameCleaner
-from src.dataframe_manager import DataFrameManager
+from src.pages.blood_donation_pipeline.src.dataframe_cleaner import DataFrameCleaner
+from src.pages.blood_donation_pipeline.src.dataframe_manager import DataFrameManager
 
 import duckdb
 
