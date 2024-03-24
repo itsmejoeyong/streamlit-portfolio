@@ -1,38 +1,28 @@
-import os
+from src.pages.blood_donation_pipeline.app import display_blood_donation_pipeline
 
-from src.blood_donation_pipeline import BloodDonationPipeline
-
-import duckdb
 import streamlit as st
 
-DUCKDB_DB_PATH = os.path.join("duckdb", "blood_donation_pipeline_v2.duckdb")
-DUCKDB_CONN = duckdb.connect(DUCKDB_DB_PATH, True)
-bdp = BloodDonationPipeline(DUCKDB_CONN)
+##### CONFIG #####
+st.set_page_config(layout="wide", initial_sidebar_state="collapsed")
 
-########## CONFIG ##########
-st.set_page_config(layout="wide")
+##### CONSTS #####
+PAGE_NAMES_TO_FUNCS: dict = {"Blood Donation Pipeline": display_blood_donation_pipeline}
+GITHUB_REPOS = {
+    "Blood Donation Pipeline": {
+        "repository": "https://github.com/itsmejoeyong/blood-donation-pipeline-v2",
+        "branch": "https://github.com/itsmejoeyong/streamlit-portfolio/tree/blood-donation-pipeline-v2",
+    },
+}
 
-########## TITLE & ABOUT ##########
-st.title('Blood donation pipeline v2')
-st.markdown('#####')
-bdp.display_about_section()
-st.divider()
+##### SIDEBAR SELECTBOX #####
+page_selected = st.sidebar.selectbox("Select a page", PAGE_NAMES_TO_FUNCS.keys())
+st.sidebar.divider()
+st.sidebar.markdown(f"""
+{page_selected}:
 
-########## METRICS ##########
-st.markdown("### Metrics")
-bdp.display_donation_metrics_by_state()
-bdp.display_donation_metrics_by_hospital()
-st.divider()
+- [dedicated repository]({GITHUB_REPOS[page_selected]['repository']})
 
-########## GRANULAR DATASET ANALYSIS ##########
-st.markdown("### Granular Dataset Analysis")
-bdp.display_granular_dataset_analysis()
-
-########## INFO ##########
-st.info("""
-- churn definition: donor who hasn't made a donation within 2 years since last donation
-- average retention after nth year: the % of donor retention on the nth year from the 1st year (for example, only ~20% of donors in age group 20-29 from the first year made a donation in the 2nd year)
-> be patient! nearly 10 million rows on a 1 core 2 gig machine takes some time even with duckdb's columnar aggregations :)
-
-> the dataset being analyzed is ds_data_granular, you can open the "About the project & data" dropdown and inspect
+- [main application branch]({GITHUB_REPOS[page_selected]['branch']})
 """)
+##### MAIN PAGE #####
+PAGE_NAMES_TO_FUNCS[page_selected]()
