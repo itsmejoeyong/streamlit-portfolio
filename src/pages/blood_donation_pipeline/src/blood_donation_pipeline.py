@@ -6,7 +6,7 @@ import streamlit as st
 
 
 class BloodDonationPipeline:
-    def __init__(self, duckdb_conn: duckdb.DuckDBPyConnection):
+    def __init__(self, duckdb_conn):
         self.conn = duckdb_conn
 
     def display_about_section(self):

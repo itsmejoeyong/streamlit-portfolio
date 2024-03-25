@@ -9,7 +9,9 @@ import streamlit as st
 
 
 def display_blood_donation_pipeline():
-    DUCKDB_DB_PATH = os.path.join("duckdb", "blood_donation_pipeline_v2.duckdb")
+    DUCKDB_DB_PATH = os.path.join(
+        f"{os.getcwd()}", "duckdb", "blood_donation_pipeline_v2.duckdb"
+    )
     DUCKDB_CONN = duckdb.connect(DUCKDB_DB_PATH, True)
     bdp = BloodDonationPipeline(DUCKDB_CONN)
 
