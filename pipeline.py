@@ -41,7 +41,11 @@ if not os.path.exists(LOAD_FOLDER):
 if not os.path.exists(DUCKDB_FOLDER):
     os.makedirs(DUCKDB_FOLDER)
 
-DUCKDB_CONN = duckdb.connect(database="duckdb/blood_donation_pipeline_v2.duckdb")
+DUCKDB_DB = os.path.join(
+    f"{os.getcwd()}", "duckdb", "blood_donation_pipeline_v2.duckdb"
+)
+
+DUCKDB_CONN = duckdb.connect(DUCKDB_DB)
 
 
 def main() -> None:
