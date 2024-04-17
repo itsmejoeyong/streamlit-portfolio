@@ -8,6 +8,7 @@ from src.pages.blood_donation_pipeline.src.dataframe_cleaner import DataFrameCle
 from src.pages.blood_donation_pipeline.src.dataframe_manager import DataFrameManager
 
 import duckdb
+import pandas_gbq as pdbq
 
 ##### LOGGING #####
 DATE_NOW = datetime.now().strftime("%Y/%m/%d")
@@ -47,6 +48,9 @@ DUCKDB_DB = os.path.join(
 
 DUCKDB_CONN = duckdb.connect(DUCKDB_DB)
 
+GCP_PROJECT_ID = "itsmejoeyong-portfolio"
+BQ_SCHEMA = "blood_donation_pipeline_v2"
+
 
 def main() -> None:
     logger.info("beginning of log: running pipeline.py")
@@ -55,12 +59,19 @@ def main() -> None:
         df_manager = DataFrameManager(url)
         df_name = df_manager.name
         df = df_manager.df
+        bq_destination = f"{BQ_SCHEMA}.{df_name}"
 
         # duckdb will select from this variable
         cleaned_df = df_cleaner.clean_dataframe(df, DATES)
+        pdbq.to_gbq(
+            dataframe=cleaned_df,
+            project_id=GCP_PROJECT_ID,
+            destination_table=bq_destination,
+            if_exists="replace",
+        )
 
-        query = f"CREATE OR REPLACE TABLE {df_name} AS SELECT * FROM cleaned_df;"
-        DUCKDB_CONN.execute(query)
+        # query = f"CREATE OR REPLACE TABLE {df_name} AS SELECT * FROM cleaned_df;"
+        # DUCKDB_CONN.execute(query)
     logger.info("end of log: pipeline.py completed successfully")
 
 
