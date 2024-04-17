@@ -163,3 +163,4 @@ duckdb/
 *.bkp
 *.ipynb
 log*/
+/test_*.py
