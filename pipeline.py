@@ -75,5 +75,11 @@ def main() -> None:
     logger.info("end of log: pipeline.py completed successfully")
 
 
+# pdbq.read_gbq(
+#     query_or_table="CREATE VIEW `blood_donation_pipeline_v2.test` AS SELECT * FROM blood_donation_pipeline_v2.donations_facility LIMIT 1",
+#     project_id=GCP_PROJECT_ID,
+# )
+
+
 if __name__ == "__main__":
     main()
