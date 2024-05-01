@@ -2,3 +2,4 @@ duckdb
 pandas
 streamlit
 pandas_gbq
+tqdm

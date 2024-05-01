@@ -6,8 +6,10 @@ import os
 
 from src.pages.blood_donation_pipeline.src.dataframe_cleaner import DataFrameCleaner
 from src.pages.blood_donation_pipeline.src.dataframe_manager import DataFrameManager
+import src.pages.blood_donation_pipeline.src.gbq_queries as gbqq
 
 import duckdb
+import pandas as pd
 import pandas_gbq as pdbq
 
 ##### LOGGING #####
@@ -70,15 +72,25 @@ def main() -> None:
             if_exists="replace",
         )
 
-        # query = f"CREATE OR REPLACE TABLE {df_name} AS SELECT * FROM cleaned_df;"
-        # DUCKDB_CONN.execute(query)
+    # query = f"CREATE OR REPLACE TABLE {df_name} AS SELECT * FROM cleaned_df;"
+    # DUCKDB_CONN.execute(query)
     logger.info("end of log: pipeline.py completed successfully")
 
+    datamarts = {
+        "granular_average_donations_by_age_group_query": gbqq.granular_average_donations_by_age_group_query,
+        "granular_average_donations_by_age_group_table": gbqq.granular_average_donations_by_age_group_table,
+        "granular_average_months_before_churn_query_v2": gbqq.granular_average_months_before_churn_query_v2,
+        "granular_average_months_between_donations_query": gbqq.granular_average_months_between_donations_query,
+    }
 
-# pdbq.read_gbq(
-#     query_or_table="CREATE VIEW `blood_donation_pipeline_v2.test` AS SELECT * FROM blood_donation_pipeline_v2.donations_facility LIMIT 1",
-#     project_id=GCP_PROJECT_ID,
-# )
+    for key, value in datamarts.items():
+        result = pdbq.read_gbq(
+            query_or_table=value,
+            project_id=GCP_PROJECT_ID,
+        )
+        DUCKDB_CONN.execute(f"CREATE OR REPLACE TABLE {key} AS SELECT * FROM result")
+
+        print(DUCKDB_CONN.execute(f"SELECT * FROM {key} LIMIT 10").df())
 
 
 if __name__ == "__main__":
