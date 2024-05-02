@@ -78,7 +78,7 @@ def main() -> None:
 
     datamarts = {
         "granular_average_donations_by_age_group_query": gbqq.granular_average_donations_by_age_group_query,
-        "granular_average_donations_by_age_group_table": gbqq.granular_average_donations_by_age_group_table,
+        "granular_cohorts_query": gbqq.granular_cohorts_query,
         "granular_average_months_before_churn_query_v2": gbqq.granular_average_months_before_churn_query_v2,
         "granular_average_months_between_donations_query": gbqq.granular_average_months_between_donations_query,
     }
