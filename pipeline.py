@@ -90,7 +90,7 @@ def main() -> None:
         )
         DUCKDB_CONN.execute(f"CREATE OR REPLACE TABLE {key} AS SELECT * FROM result")
 
-        print(DUCKDB_CONN.execute(f"SELECT * FROM {key} LIMIT 10").df())
+        # print(DUCKDB_CONN.execute(f"SELECT * FROM {key} LIMIT 10").df())
 
 
 if __name__ == "__main__":
