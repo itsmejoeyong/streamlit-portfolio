@@ -123,6 +123,22 @@ def homepage():
     - Implemented & captured Type 2 Slowly Changing Dimensions data warehousing practices in analytics database to analyze historical data accurately.
     - Handled Migration of BI services on linux virtual machines, databases & data migration from MariaDB to MySQL during migration project.
     """)
+    # create some space
+    st.title("")
+    create_two_columns_with_ratio(f"### {COMPANIES['rinse'][0]['name']}", 80, "", 20)
+    create_two_columns_with_ratio(
+        f"##### {COMPANIES['rinse'][0]['latest title'][0]['name']}",
+        80,
+        f"{COMPANIES['rinse'][0]['latest title'][0]['tenure']}",
+        20,
+    )
+    st.markdown("""
+    - Managed FOH/BOH (Front/Back of House) resources (staff timetables, stocks, audit, opening/closing etc.)
+    - Prepared, personalized & supervised team onboarding & training SOP's for junior & Senior Service Crews, Baristas & Shift Managers.
+    - Calibrated & QC'd hand brew & espresso based beverages.
+    - Managed over half a dozen brands & platforms for delivery services, handling well over 100's of orders per day.
+    - Created social media content (pictures & copywriting) for company's Instagram.
+    """)
 
     st.divider()
 
