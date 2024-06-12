@@ -2,9 +2,10 @@
 
 SESSION_NAME="streamlit"
 SESSION_PATH="/home/ubuntu/streamlit-portfolio/"
-ACTIVATE_VENV="source .venv/bin/activate"
-PYTHON_PIPELINE_CMD="python pipeline.py"
-STREAMLIT_CMD="python -m streamlit run app.py"
+# Use absolute path for Python interpreter inside the virtual environment
+PYTHON_VENV_PATH="$SESSION_PATH.venv/bin/python"
+PYTHON_PIPELINE_CMD="$PYTHON_VENV_PATH $SESSION_PATH/pipeline.py"
+STREAMLIT_CMD="$PYTHON_VENV_PATH -m streamlit run $SESSION_PATH/app.py --server.fileWatcherType none"
 MAX_RETRIES=5
 RETRY_DELAY=2  # seconds
 
@@ -17,7 +18,7 @@ function session_exists {
 function setup_session {
     tmux new-session -d -s $SESSION_NAME
     tmux send-keys -t $SESSION_NAME "cd $SESSION_PATH" C-m
-    tmux send-keys -t $SESSION_NAME "$ACTIVATE_VENV" C-m
+    # Directly calling the commands with the Python interpreter from the venv
     tmux send-keys -t $SESSION_NAME "$PYTHON_PIPELINE_CMD" C-m
     tmux send-keys -t $SESSION_NAME "$STREAMLIT_CMD" C-m
 }
