@@ -39,7 +39,15 @@ COMPANIES: dict = {
                 }
             ],
         }
-    ]
+    ],
+    "rinse": [
+        {
+            "name": "Rinse KL",
+            "latest title": [
+                {"name": "Barista cum Cafe Manger", "tenure": "After SPM - 2022 Mar"}
+            ],
+        }
+    ],
 }
 
 
