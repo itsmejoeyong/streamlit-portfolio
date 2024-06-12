@@ -39,7 +39,6 @@ def display_blood_donation_pipeline():
     st.info("""
     - churn definition: donor who hasn't made a donation within 2 years since last donation
     - average retention after nth year: the % of donor retention on the nth year from the 1st year (for example, only ~20% of donors in age group 20-29 from the first year made a donation in the 2nd year)
-    > be patient! nearly 10 million rows on a 1 core 2 gig machine takes some time even with duckdb's columnar aggregations :)
 
     > the dataset being analyzed is ds_data_granular, you can open the "About the project & data" dropdown and inspect
     """)
