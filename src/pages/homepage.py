@@ -100,13 +100,14 @@ def homepage():
     st.markdown("""
     - Developed pipelines to support AI department’s LLM development using OpenAI models, LangChain, PgVector & AzureAI.
     - Developed, modeled & optimized database for LLM application, resulting in 50% reduced costs & 100% increase in throughput/performance.
+    - Replaced former Analytics Pipeline with BigQuery, Azure Data Factory & BQ Transfer Jobs, improving analysis speeds by more than 1000%.
+    - Revamped Analytics & Dashboarding using BigQuery, DBT & LookerStudio improving workflow efficiency by more than 100%.
     - Constructed ETL pipeline using Azure Form Recognizer to boost workflow speed and efficiency, resulting in processing over 500% more documents.
     - Engineered ETL pipeline using GPT for document classification & labeling, reducing manual intervention, and saving 100’s of hours a week.
-    - Built PostgreSQL, MySQL & Bigquery idempotent pipelines to extract & load data to/from, for downstream analysis.
     - Established Airflow instance with Docker, orchestrating dozens of DAGS, unifying most data-related development into a single repository.
     - Replaced Segment with self-hosted Rudderstack deployment for CDP analytics, reducing costs by 75%.
     - Crafted Batch ETL pipeline (GUI + code) for event-based/clickstream data using AWS services, enhancing data frequency from weekly to daily intervals.
-    - Enforced ISMS ISO 27001:2022 practices across engineering teams, managing engineering-related ISMS documents, and ensuring compliance.
+    - Engineering Team Representative for ISMS ISO 27001:2022 certification, managing engineering-related ISMS documents, and ensuring compliance.
     - Deployed self-hosted Wireguard VPN server to comply with ISO 27001:2022 standard, resulting in 75% cost reduction compared to PaaS VPN.
     """)
     create_two_columns_with_ratio(
