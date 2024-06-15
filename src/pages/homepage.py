@@ -12,6 +12,7 @@ NAME: str = "Joe Yong"
 DESCRIPTION: str = """
 Data Engineer in Pandai, an Edtech startup helping students get better grades in Malaysia!
 """
+CATCH_PHRASE: str = "I don't just build pipelines, I build value!"
 SOCIAL_MEDIA: dict = {
     "LinkedIn": "https://www.linkedin.com/in/itsmejoeyong/",
     "GitHub": "https://github.com/itsmejoeyong",
@@ -56,6 +57,7 @@ def homepage():
 
     center_header("Joe Yong")
     center_paragraph(DESCRIPTION)
+    center_paragraph(CATCH_PHRASE)
     st.info("""
     I keep my meetings, presentations, summaries, a̵n̵d̵ ̵m̵y̵ ̵w̵o̵r̵k̵ ̵h̵o̵u̵r̵s̵ short.
 
@@ -108,7 +110,7 @@ def homepage():
     st.markdown("""
     - Developed pipelines to support AI department’s LLM development using OpenAI models, LangChain, PgVector & AzureAI.
     - Developed, modeled & optimized database for LLM application, resulting in 50% reduced costs & 100% increase in throughput/performance.
-    - Replaced former Analytics Pipeline with BigQuery, Azure Data Factory & BQ Transfer Jobs, improving analysis speeds by more than 1000%.
+    - Replaced former ELT Analytics Pipeline with BigQuery, Azure Data Factory & BQ Transfer Jobs, improving analysis speeds by more than 1000% & reducing processing time by 60%.
     - Revamped Analytics & Dashboarding using BigQuery, DBT & LookerStudio improving workflow efficiency by more than 100%.
     - Constructed ETL pipeline using Azure Form Recognizer to boost workflow speed and efficiency, resulting in processing over 500% more documents.
     - Engineered ETL pipeline using GPT for document classification & labeling, reducing manual intervention, and saving 100’s of hours a week.
