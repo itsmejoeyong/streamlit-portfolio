@@ -129,9 +129,15 @@ def homepage():
     st.markdown("""
     - 75% reduction in database operational costs & reduced query times from hours to seconds by optimizing queries & applying strategic indexes.
     - 500% increased efficiency in improved data cleansing processes allowing respective departments to set higher goals.
-    - Set up automated internal/external self-service dashboards/reports on LookerStudio with over a dozen partners, saving dozens of hours of ad hoc querying a week.
     - Implemented & captured Type 2 Slowly Changing Dimensions data warehousing practices in analytics database to analyze historical data accurately.
     - Handled Migration of BI services on linux virtual machines, databases & data migration from MariaDB to MySQL during migration project.
+    - Reduced Production MariaDB & MySQL server load by 60% (100% peak load > 40% peak load) which addressed web app freezing issues & saving RM 60,000 annually on DB upgrades annually.
+    - Set up automated self-service dashboards/reports on LookerStudio which allowed us to take on multiple projects with business partners with less ad-hoc querying/reporting, saving dozens of hours a week.
+    - Improved Analytics DB performance which sped up reporting & query operations from 2 hours down to seconds/minutes.
+    - Established & managing data mart practices in analytics database for easier data governance, observability & troubleshooting, made up of over 50 components (stored procedures & events).
+    - PIC for infrastructure migration project w/ business partner from AWS to Azure, handling migration of BI service on linux VM, Database & data migration from MariaDB to MySQL, management of Terraform script.
+    - Increased reporting speeds from weekly to daily updates for clickstream data by implementing an ETL pipeline (GUI + code) using AWS services to pull data & load it into our analytics database.
+    - Set up Database replication on AWS & automatic DB replication error logging & skipping ensuring 100% replica uptime
     """)
     # create some space
     st.title("")
