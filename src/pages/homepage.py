@@ -160,9 +160,9 @@ def homepage():
 
     # ----- Skills -----
     create_two_columns_with_ratio(
-        f"### Production Skills",
+        "### Production Skills",
         80,
-        f"",
+        "",
         20,
     )
     st.markdown("""
@@ -179,3 +179,41 @@ def homepage():
     Expand the sidebar on the top left and select the projects you want to view!
     Or head to my github page :)
     """)
+
+    st.divider()
+
+    # ----- Certifications -----
+    create_two_columns_with_ratio(
+        "### Certifications",
+        80,
+        "",
+        20,
+    )
+
+    create_two_columns_with_ratio(
+        "- [DBT Fundamentals](itsmejoeyong.com)",
+        80,
+        "2024-04 - 2026-04",
+        20,
+    )
+
+    create_two_columns_with_ratio(
+        "- [AWS Certified Solutions Architect – Associate](https://www.credly.com/badges/c101ada5-369e-486a-8fc6-6444411726ce)",
+        80,
+        "2023-06 - 2026-06",
+        20,
+    )
+
+    create_two_columns_with_ratio(
+        "- [Datacamp Data Engineer](https://www.datacamp.com/completed/statement-of-accomplishment/track/7073af6f1dd3fb64befc5cae4d6ac8757e3eab9c)",
+        80,
+        "2023-02 ~",
+        20,
+    )
+
+    create_two_columns_with_ratio(
+        "- [Google Data Analytics](https://www.coursera.org/account/accomplishments/specialization/certificate/AZ2P6LM2RWA5)",
+        80,
+        "2022-05 ~",
+        20,
+    )
