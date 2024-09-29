@@ -76,14 +76,9 @@ def homepage():
     I keep my meetings, presentations, summaries, a̵n̵d̵ ̵m̵y̵ ̵w̵o̵r̵k̵ ̵h̵o̵u̵r̵s̵ short.
 
     I left my first job after a week, I don't have a degree, SPM results kinda sucked, and made many mistakes along the way, 
-    but that didn't stop me from becoming a Barista, a Cafe Manager, a Data Analyst, & recently a Data Engineer!
-
-    Currently in a startup, i wear many many hats; 
-    used to do a little community management, data work here and there, managing & training data interns, 
-    some infrastructure, dev ops, non data/coding project management (isms iso engineering representative) etc.
-
-    am currently interested in the software-engineering aspects & methodologies (SOLID),
-    trying to implement what I'm learning into my data products (basically my code) & projects!
+    but that didn't stop me from becoming a Barista, a Cafe Manager, a Data Analyst, & recently...
+    
+    a Data Engineer! Oh not at one, but at 2 companies!!!
 
     Curious as to what I do? Head on down to my work experience! 
     It's slightly more detailed if you're curious about the nitty-gritty!
