@@ -10,7 +10,7 @@ import streamlit as st
 PAGE_TITLE: str = "DIGITAL Portfolio | Joe Yong"
 NAME: str = "Joe Yong"
 DESCRIPTION: str = """
-Data Engineer in Pandai, an Edtech startup helping students get better grades in Malaysia!
+Data Engineer at Borong, a leading platform empowering businesses with efficient digital wholesale solutions in Malaysia!
 """
 CATCH_PHRASE: str = "I don't just build pipelines, I build value!"
 SOCIAL_MEDIA: dict = {
