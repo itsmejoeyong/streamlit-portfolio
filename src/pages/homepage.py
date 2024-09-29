@@ -17,6 +17,11 @@ SOCIAL_MEDIA: dict = {
     "LinkedIn": "https://www.linkedin.com/in/itsmejoeyong/",
     "GitHub": "https://github.com/itsmejoeyong",
 }
+COMPANY_WEBSITES: dict = {
+    "pandai": "https://my.pandai.org/",
+    "borong": "https://www.borong.com/my",
+    "rinse": "https://www.instagram.com/rinse_kl/",
+}
 MARKDOWN_LINKEDIN_LINK: str = f"[LinkedIn]({SOCIAL_MEDIA["LinkedIn"]})"
 MARKDOWN_GITHUB_LINK: str = f"[GitHub]({SOCIAL_MEDIA["GitHub"]})"
 EMAIL: str = "joeanselmyz@gmail.com"
@@ -24,13 +29,22 @@ HTML_EMAIL_LINK: str = f'<a href="mailto:{EMAIL}">Email</a>'
 PHONE_NO: int = 60182307282
 WHATSAPP_LINK: str = f"[Whatsapp](https://web.whatsapp.com/send?phone={PHONE_NO})"
 COMPANIES: dict = {
+    "borong": [
+        {
+            "name": "Borong",
+            "latest title": [{"name": "Data Engineer", "tenure": "2024 Oct - Present"}],
+        }
+    ],
     "pandai": [
         {
             "name": "Pandai Education Sdn Bhd",
+            "part time title": [
+                {"name": "Data Engineer (part time)", "tenure": "2024 Sept - Present"}
+            ],
             "latest title": [
                 {
                     "name": "Data Engineer",
-                    "tenure": "2023 Oct - Present",
+                    "tenure": "2023 Oct - 2024 Sept",
                 }
             ],
             "second latest title": [
@@ -100,7 +114,42 @@ def homepage():
     st.divider()
 
     # ----- WORK EXPERIENCE -----
-    create_two_columns_with_ratio(f"### {COMPANIES['pandai'][0]['name']}", 80, "", 20)
+    create_two_columns_with_ratio(
+        f"### [{COMPANIES['borong'][0]['name']}]({COMPANY_WEBSITES['borong']})",
+        80,
+        f"",
+        20,
+    )
+    create_two_columns_with_ratio(
+        f"##### {COMPANIES['borong'][0]['latest title'][0]['name']}",
+        80,
+        f"{COMPANIES['borong'][0]['latest title'][0]['tenure']}",
+        20,
+    )
+    st.markdown("""
+    - Yet to document!
+    """)
+    st.title("")
+
+    create_two_columns_with_ratio(
+        f"### [{COMPANIES['pandai'][0]['name']}]({COMPANY_WEBSITES['pandai']})",
+        80,
+        "",
+        20,
+    )
+    create_two_columns_with_ratio(
+        f"##### {COMPANIES['pandai'][0]['part time title'][0]['name']}",
+        80,
+        f"{COMPANIES['pandai'][0]['part time title'][0]['tenure']}",
+        20,
+    )
+    st.markdown("""
+    - Revamped ELT pipeline, replacing Azure Data Factory w Databricks & Airflow, reducing operational costs by 90%
+    - Initiated machine learning pipeline integration with production app to predict high-potential subscribers with the Product & B2C teams.
+    - Established playbooks, documentation, architectual, network & logic diagrams for Data Team & administrative &/ diagnostics operations.
+    """)
+    st.title("")
+
     create_two_columns_with_ratio(
         f"##### {COMPANIES['pandai'][0]['latest title'][0]['name']}",
         80,
@@ -109,7 +158,7 @@ def homepage():
     )
     st.markdown("""
     - Developed pipelines to support AI department’s LLM development using OpenAI models, LangChain, PgVector & AzureAI.
-    - Developed, modeled & optimized database for LLM application, resulting in 50% reduced costs & 100% increase in throughput/performance.
+    - Developed, modeled, optimized database & assisted in feature development for LLM application, resulting in 50% reduced costs & 100% increase in throughput/performance.
     - Replaced former ELT Analytics Pipeline with BigQuery, Azure Data Factory & BQ Transfer Jobs, improving analysis speeds by more than 1000% & reducing processing time by 60%.
     - Revamped Analytics & Dashboarding using BigQuery, DBT & LookerStudio improving workflow efficiency by more than 100%.
     - Constructed ETL pipeline using Azure Form Recognizer to boost workflow speed and efficiency, resulting in processing over 500% more documents.
@@ -120,6 +169,8 @@ def homepage():
     - Engineering Team Representative for ISMS ISO 27001:2022 certification, managing engineering-related ISMS documents, and ensuring compliance.
     - Deployed self-hosted Wireguard VPN server to comply with ISO 27001:2022 standard, resulting in 75% cost reduction compared to PaaS VPN.
     """)
+    st.title("")
+
     create_two_columns_with_ratio(
         f"##### {COMPANIES['pandai'][0]['second latest title'][0]['name']}",
         80,
@@ -141,7 +192,12 @@ def homepage():
     """)
     # create some space
     st.title("")
-    create_two_columns_with_ratio(f"### {COMPANIES['rinse'][0]['name']}", 80, "", 20)
+    create_two_columns_with_ratio(
+        f"### [{COMPANIES['rinse'][0]['name']}]({COMPANY_WEBSITES['rinse']})",
+        80,
+        "",
+        20,
+    )
     create_two_columns_with_ratio(
         f"##### {COMPANIES['rinse'][0]['latest title'][0]['name']}",
         80,
