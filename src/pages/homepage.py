@@ -242,7 +242,14 @@ def homepage():
     )
 
     create_two_columns_with_ratio(
-        "- [DBT Fundamentals](itsmejoeyong.com)",
+        "- [Apache Airflow Fundamentals](https://www.credly.com/badges/3d85171c-dc3b-42b1-b71a-66080d64c53c/public_url)",
+        80,
+        "2024-11 ~",
+        20,
+    )
+
+    create_two_columns_with_ratio(
+        "- [DBT Fundamentals](https://credentials.getdbt.com/a284fe6c-1953-42e4-8fd4-e006bb8db16b)",
         80,
         "2024-04 - 2026-04",
         20,
