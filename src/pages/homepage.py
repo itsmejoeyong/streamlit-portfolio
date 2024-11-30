@@ -242,6 +242,13 @@ def homepage():
     )
 
     create_two_columns_with_ratio(
+        "- [DAG Authoring For Apache Airflow](https://www.credly.com/badges/0ede7e24-064e-44b5-8ef1-e4e6d3797bc4/public_url",
+        80,
+        "2024-11 ~",
+        20,
+    )
+
+    create_two_columns_with_ratio(
         "- [Apache Airflow Fundamentals](https://www.credly.com/badges/3d85171c-dc3b-42b1-b71a-66080d64c53c/public_url)",
         80,
         "2024-11 ~",
