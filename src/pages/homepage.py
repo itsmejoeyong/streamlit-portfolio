@@ -122,7 +122,10 @@ def homepage():
         20,
     )
     st.markdown("""
-    - Yet to document!
+    - Assisted in the establishment & maintanence of Airflow, managing over 3000+ Tasks & dozens of DAGs utilizing Task & DAG factories, optimizing workflow orchestration.
+    - Maintaining & developing Terraform scripts to streamline infrastructure deployment & management of the Data Team's resources, significantly reducing provisioning time.
+    - Migrated SQL transformations from Databricks to Snowflake, leveraging over 3000+ DBT models to build the medallion layers, improving data governance & observability.
+    - Redesigned & migrated legacy EL pipelines from Databricks to Python, resolving long-standing data collection efforts.
     """)
     st.title("")
 
@@ -142,6 +145,9 @@ def homepage():
     - Revamped ELT pipeline, replacing Azure Data Factory w Databricks & Airflow, reducing operational costs by 90%
     - Initiated machine learning pipeline integration with production app to predict high-potential subscribers with the Product & B2C teams.
     - Established playbooks, documentation, architectual, network & logic diagrams for Data Team & administrative &/ diagnostics operations.
+    - Established & Maintaining Data Lineage & Data Dictionary Documentations, significantly improving data staff onboarding & understanding.
+    - Optimized & ported production application SQL-based jobs to Airflow, centralizing most scheduled-based jobs, & improving performance by more than 100%.
+    - Worked with Product & Engineering teams to model optimized tables & queries to deploy a new user-prompt feature.
     """)
     st.title("")
 
