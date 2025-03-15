@@ -122,10 +122,14 @@ def homepage():
         20,
     )
     st.markdown("""
-    - Assisted in the establishment & maintanence of Airflow, managing over 3000+ Tasks & dozens of DAGs utilizing Task & DAG factories, optimizing workflow orchestration.
-    - Maintaining & developing Terraform scripts to streamline infrastructure deployment & management of the Data Team's resources, significantly reducing provisioning time.
-    - Migrated SQL transformations from Databricks to Snowflake, leveraging over 3000+ DBT models to build the medallion layers, improving data governance & observability.
-    - Redesigned & migrated legacy EL pipelines from Databricks to Python, resolving long-standing data collection efforts.
+    - Orchestrated 4,000+ Airflow tasks across dozens of DAGs using dynamic DAG and task generation, optimizing workflow efficiency and reliability.
+    - Developed and maintained Terraform scripts to automate infrastructure deployment on AWS and Snowflake, significantly reducing provisioning time and operational overhead.
+    - Migrated SQL transformations from Databricks to Snowflake, leveraging thousands of DBT models to enhance medallion layer and data mart construction, improving data governance and observability.
+    - Redesigned and migrated legacy EL pipelines from Databricks to Python, resolving long-standing data collection inefficiencies and improving maintainability.
+    - Implemented data validation and freshness checks using Reladiff, achieving >99% data quality and strengthening trust in data integrity.
+    - Built and maintained dozens of data integration pipelines across multiple APIs, establishing a Master Data Management (MDM) layer to unify data sources for analytics.
+    - Trained analysts in DBT best practices, enabling self-service analytics and improving data literacy across the team.
+    - Maintained and enhanced Apache Superset by implementing RBAC controls, custom themes, and UI extensions to improve security and user experience.
     """)
     st.title("")
 
@@ -147,7 +151,12 @@ def homepage():
     - Established playbooks, documentation, architectual, network & logic diagrams for Data Team & administrative &/ diagnostics operations.
     - Established & Maintaining Data Lineage & Data Dictionary Documentations, significantly improving data staff onboarding & understanding.
     - Optimized & ported production application SQL-based jobs to Airflow, centralizing most scheduled-based jobs, & improving performance by more than 100%.
-    - Worked with Product & Engineering teams to model optimized tables & queries to deploy a new user-prompt feature.
+    - Led the ideation and development of user prompts, increasing premium user conversion from 6-7% to 10-11% YoY, a 40%+ relative growth
+    - Established CI/CD pipelines and enforced best development practices in git, python & SQL, accelerating deployment cycles and ensuring high code quality
+    - Managing hundreds of DBT models within a medallion architecture, optimizing data transformations for reliability, scalability & reduction in compute costs
+    - Designed and maintained Airflow workflows with 100+ DAGs and 2,000+ tasks, leveraging dynamic generation to streamline orchestration and reduce operational overhead.
+    - Overseeing a BigQuery instance processing 16.8TB of data monthly, handling 250K+ jobs per month, and optimizing query performance for cost efficiency.
+    - Led dashboard enhancements by eliminating vanity metrics and introducing granular user segmentation, enabling data-driven identification of key levers influencing organizational North Star metrics
     """)
     st.title("")
 
