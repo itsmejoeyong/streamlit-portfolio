@@ -166,3 +166,5 @@ log*/
 test_pd.py
 test_pl.py
 test.py
+
+.cursor/
